@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * El JWT se valida contra el JWKS del ms-seguridad mediante la propiedad
  * spring.security.oauth2.resourceserver.jwt.jwk-set-uri (Spring autoconfigura el JwtDecoder).
  *
+ * - POST /auth/register es PUBLICO (permitAll): registro de usuarios sin token.
  * - POST /auth/login es PUBLICO (permitAll): es el endpoint que emite el token.
  * - /actuator/** publico (health/info).
  * - El resto requiere un JWT valido (authenticated).
@@ -30,6 +31,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())

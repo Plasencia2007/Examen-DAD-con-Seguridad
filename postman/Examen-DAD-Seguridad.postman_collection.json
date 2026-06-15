@@ -18,8 +18,46 @@
   "item": [
     {
       "name": "1. Auth",
-      "description": "Autenticacion. Hacer login primero para obtener y guardar el token JWT.",
+      "description": "Autenticacion. Registro publico (POST /auth/register) y login (POST /auth/login). Hacer login para obtener y guardar el token JWT.",
       "item": [
+        {
+          "name": "POST Register (publico)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"nuevo\",\n  \"password\": \"nuevo123\",\n  \"nombreCompleto\": \"Usuario Nuevo\",\n  \"rol\": \"USER\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Registro PUBLICO de usuarios (no requiere token). El campo `rol` acepta cualquier rol existente: USER, OPERADOR o incluso ADMIN. Devuelve el usuario creado (201 Created). Pasa por el gateway (http://localhost:8080)."
+          },
+          "response": []
+        },
         {
           "name": "POST Login (admin)",
           "request": {
@@ -35,7 +73,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -43,10 +81,12 @@
               }
             },
             "url": {
-              "raw": "{{gateway_url}}/auth/login",
+              "raw": "http://localhost:8080/auth/login",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "auth",
                 "login"
@@ -81,10 +121,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/seguridad/usuarios",
+              "raw": "http://localhost:8080/seguridad/usuarios",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "usuarios"
@@ -100,10 +142,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/seguridad/usuarios/1",
+              "raw": "http://localhost:8080/seguridad/usuarios/1",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "usuarios",
@@ -134,10 +178,12 @@
               }
             },
             "url": {
-              "raw": "{{gateway_url}}/seguridad/usuarios",
+              "raw": "http://localhost:8080/seguridad/usuarios",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "usuarios"
@@ -167,10 +213,12 @@
               }
             },
             "url": {
-              "raw": "{{gateway_url}}/seguridad/usuarios/2/rol",
+              "raw": "http://localhost:8080/seguridad/usuarios/2/rol",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "usuarios",
@@ -188,10 +236,12 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/seguridad/usuarios/2",
+              "raw": "http://localhost:8080/seguridad/usuarios/2",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "usuarios",
@@ -214,10 +264,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/seguridad/roles",
+              "raw": "http://localhost:8080/seguridad/roles",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "roles"
@@ -247,10 +299,12 @@
               }
             },
             "url": {
-              "raw": "{{gateway_url}}/seguridad/roles",
+              "raw": "http://localhost:8080/seguridad/roles",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "roles"
@@ -280,10 +334,12 @@
               }
             },
             "url": {
-              "raw": "{{gateway_url}}/seguridad/roles/1/permisos",
+              "raw": "http://localhost:8080/seguridad/roles/1/permisos",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "roles",
@@ -301,10 +357,12 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/seguridad/roles/4",
+              "raw": "http://localhost:8080/seguridad/roles/4",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "roles",
@@ -327,10 +385,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/seguridad/permisos",
+              "raw": "http://localhost:8080/seguridad/permisos",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "permisos"
@@ -360,10 +420,12 @@
               }
             },
             "url": {
-              "raw": "{{gateway_url}}/seguridad/permisos",
+              "raw": "http://localhost:8080/seguridad/permisos",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "permisos"
@@ -379,10 +441,12 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/seguridad/permisos/5",
+              "raw": "http://localhost:8080/seguridad/permisos/5",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "seguridad",
                 "permisos",
@@ -405,10 +469,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/reservas",
+              "raw": "http://localhost:8080/reservas",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "reservas"
               ]
@@ -423,10 +489,12 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/reservas/R0000001",
+              "raw": "http://localhost:8080/reservas/R0000001",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "reservas",
                 "R0000001"
@@ -456,10 +524,12 @@
               }
             },
             "url": {
-              "raw": "{{gateway_url}}/reservas",
+              "raw": "http://localhost:8080/reservas",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "reservas"
               ]
@@ -488,10 +558,12 @@
               }
             },
             "url": {
-              "raw": "{{gateway_url}}/reservas/R0000001",
+              "raw": "http://localhost:8080/reservas/R0000001",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "reservas",
                 "R0000001"
@@ -507,10 +579,12 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{gateway_url}}/reservas/R0000001",
+              "raw": "http://localhost:8080/reservas/R0000001",
+              "protocol": "http",
               "host": [
-                "{{gateway_url}}"
+                "localhost"
               ],
+              "port": "8080",
               "path": [
                 "reservas",
                 "R0000001"

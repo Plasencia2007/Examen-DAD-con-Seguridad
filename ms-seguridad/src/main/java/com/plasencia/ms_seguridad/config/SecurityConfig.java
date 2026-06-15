@@ -33,7 +33,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Endpoints p&#250;blicos: login y publicaci&#243;n de la clave p&#250;blica (JWKS)
+                        // Endpoints p&#250;blicos: registro, login y publicaci&#243;n de la clave p&#250;blica (JWKS)
+                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers("/oauth2/jwks", "/actuator/**").permitAll()
                         // El resto requiere autenticaci&#243;n (la autorizaci&#243;n fina va por @PreAuthorize)

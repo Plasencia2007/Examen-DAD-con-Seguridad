@@ -11,8 +11,8 @@
 	<groupId>com.plasencia</groupId>
 	<artifactId>ms-lib-config-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>ms-lib-config-server</name>
+	<description>Servidor de configuración centralizada (Spring Cloud Config Server)</description>
 	<url/>
 	<licenses>
 		<license/>

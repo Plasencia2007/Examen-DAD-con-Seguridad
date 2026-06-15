@@ -11,8 +11,8 @@
 	<groupId>com.plasencia</groupId>
 	<artifactId>ms-reserva</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>ms-reserva</name>
+	<description>Microservicio de reservas (Resource Server con RBAC)</description>
 	<url/>
 	<licenses>
 		<license/>

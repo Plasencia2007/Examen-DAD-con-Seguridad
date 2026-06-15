@@ -11,8 +11,8 @@
 	<groupId>com.plasencia</groupId>
 	<artifactId>ms-lib-registry-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>ms-lib-registry-server</name>
+	<description>Servidor de registro y descubrimiento (Eureka Server)</description>
 	<url/>
 	<licenses>
 		<license/>

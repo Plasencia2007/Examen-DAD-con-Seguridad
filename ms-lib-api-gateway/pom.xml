@@ -11,8 +11,8 @@
 	<groupId>com.plasencia</groupId>
 	<artifactId>ms-lib-api-gateway</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>ms-lib-api-gateway</name>
+	<description>Puerta de enlace única (Spring Cloud Gateway) con validación JWT</description>
 	<url/>
 	<licenses>
 		<license/>

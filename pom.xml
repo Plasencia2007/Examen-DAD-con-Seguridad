@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.plasencia</groupId>
+	<artifactId>examen-dad-seguridad</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>examen-dad-seguridad</name>
+	<description>POM agregador de los microservicios del examen DAD (seguridad). Solo agrupa los
+		módulos para que el IDE los reconozca y para poder compilarlos juntos; cada microservicio
+		conserva su propio spring-boot-starter-parent y su configuración.</description>
+
+	<!--
+		Este POM es solo un AGREGADOR (no es el parent de los módulos): cada módulo sigue
+		heredando de spring-boot-starter-parent. Maven permite agregar módulos cuyo parent
+		es distinto al agregador. Al abrir esta carpeta, el IDE detecta los 5 proyectos.
+	-->
+	<modules>
+		<module>ms-lib-registry-server</module>
+		<module>ms-lib-config-server</module>
+		<module>ms-seguridad</module>
+		<module>ms-reserva</module>
+		<module>ms-lib-api-gateway</module>
+	</modules>
+
+</project>

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: ms-lib-config-server
+  # Modo NATIVE: sirve los ficheros de configuración desde el classpath
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: "classpath:/configurations/"
+server:
+  port: 8888
+# Se registra en Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8761/eureka/"
+  instance:
+    prefer-ip-address: true

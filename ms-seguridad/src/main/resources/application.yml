@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: ms-seguridad
+  # ===== Config Server (opcional: si está arriba, sobreescribe lo local) =====
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  # ===== PostgreSQL (Docker localhost:5433) =====
+  datasource:
+    url: "jdbc:postgresql://localhost:5433/db_seguridad"
+    username: postgres
+    password: oracle123
+    driver-class-name: org.postgresql.Driver
+  # ===== JPA / Hibernate =====
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    open-in-view: false
+server:
+  port: 8081
+# ===== Eureka (descubrimiento) =====
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8761/eureka/"
+  instance:
+    prefer-ip-address: true
+# ===== JWT =====
+security:
+  jwt:
+    # Tiempo de vida del access token en segundos (1 hora)
+    expiration-seconds: 3600
+    # Emisor del token (claim "iss")
+    issuer: ms-seguridad

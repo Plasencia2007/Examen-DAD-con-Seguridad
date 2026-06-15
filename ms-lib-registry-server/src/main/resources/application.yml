@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ms-lib-registry-server
+server:
+  port: 8761
+# Este servidor NO se registra ni descarga el registro de sí mismo
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: "http://localhost:8761/eureka/"
+  instance:
+    hostname: localhost

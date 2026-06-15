@@ -1,0 +1,9 @@
+server:
+  port: 8080
+spring:
+  # El gateway valida el JWT con la clave publica del ms-seguridad (JWKS)
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:8081/oauth2/jwks"

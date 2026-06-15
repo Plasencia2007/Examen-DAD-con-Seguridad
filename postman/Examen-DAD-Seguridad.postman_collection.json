@@ -1,0 +1,526 @@
+{
+  "info": {
+    "name": "Examen DAD - Seguridad (JWT)",
+    "_postman_id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+    "description": "Coleccion de pruebas del examen de microservicios con seguridad JWT. Todo el trafico pasa por el API Gateway (http://localhost:8080).\n\nFLUJO DE PRUEBA:\n1) Login como admin (POST /auth/login). El script de la pestana Tests guarda automaticamente el token en la variable de environment `token`.\n2) Crear usuarios / roles / permisos usando los endpoints de la carpeta de Seguridad (requieren rol ADMIN, token heredado).\n3) Probar reservas con distintos usuarios para validar el control de acceso por permiso (RBAC): RESERVA_LEER, RESERVA_CREAR, RESERVA_ACTUALIZAR, RESERVA_ELIMINAR.\n\nSEGURIDAD:\n- La coleccion define una autorizacion Bearer a nivel de coleccion con token `{{token}}`. Todas las peticiones lo heredan automaticamente.\n- Unica excepcion: POST /auth/login, que sobreescribe la auth a `noauth`.\n- Las variables se definen en el environment 'Examen DAD - Seguridad'. Selecciona ese environment antes de ejecutar.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. Auth",
+      "description": "Autenticacion. Hacer login primero para obtener y guardar el token JWT.",
+      "item": [
+        {
+          "name": "POST Login (admin)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/auth/login",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Autentica al usuario admin y devuelve un token JWT. Esta peticion NO usa auth (noauth). El script de Tests guarda `accessToken` en la variable de environment `token` para que el resto de peticiones lo hereden."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const data = pm.response.json();",
+                  "pm.environment.set(\"token\", data.accessToken);",
+                  "pm.test(\"login ok\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "2. Usuarios (ADMIN)",
+      "description": "Gestion de usuarios. Requiere rol ADMIN. Token heredado de la coleccion.",
+      "item": [
+        {
+          "name": "GET Listar usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/usuarios",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "usuarios"
+              ]
+            },
+            "description": "Lista todos los usuarios. Requiere rol ADMIN. Usa el token Bearer heredado de la coleccion."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Usuario por id (1)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/usuarios/1",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "usuarios",
+                "1"
+              ]
+            },
+            "description": "Obtiene el usuario con id 1. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"operador1\",\n  \"password\": \"oper123\",\n  \"nombreCompleto\": \"Operador Uno\",\n  \"rol\": \"OPERADOR\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/usuarios",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "usuarios"
+              ]
+            },
+            "description": "Crea un nuevo usuario 'operador1' con el rol OPERADOR. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Actualizar rol de usuario (2)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rol\": \"USER\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/usuarios/2/rol",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "usuarios",
+                "2",
+                "rol"
+              ]
+            },
+            "description": "Reasigna el rol del usuario 2 a USER. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Eliminar usuario (2)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/usuarios/2",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "usuarios",
+                "2"
+              ]
+            },
+            "description": "Elimina el usuario con id 2. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "3. Roles (ADMIN)",
+      "description": "Gestion de roles. Requiere rol ADMIN. Token heredado de la coleccion.",
+      "item": [
+        {
+          "name": "GET Listar roles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/roles",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "roles"
+              ]
+            },
+            "description": "Lista todos los roles. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Crear rol",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"SUPERVISOR\",\n  \"descripcion\": \"Supervisa reservas\",\n  \"permisos\": [\"RESERVA_LEER\", \"RESERVA_ACTUALIZAR\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/roles",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "roles"
+              ]
+            },
+            "description": "Crea el rol SUPERVISOR con los permisos RESERVA_LEER y RESERVA_ACTUALIZAR. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Actualizar permisos de rol (1)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\"RESERVA_LEER\", \"RESERVA_CREAR\", \"RESERVA_ACTUALIZAR\", \"RESERVA_ELIMINAR\"]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/roles/1/permisos",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "roles",
+                "1",
+                "permisos"
+              ]
+            },
+            "description": "Reasigna los permisos del rol 1 al conjunto completo de permisos de reservas. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Eliminar rol (4)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/roles/4",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "roles",
+                "4"
+              ]
+            },
+            "description": "Elimina el rol con id 4. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "4. Permisos (ADMIN)",
+      "description": "Gestion de permisos. Requiere rol ADMIN. Token heredado de la coleccion.",
+      "item": [
+        {
+          "name": "GET Listar permisos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/permisos",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "permisos"
+              ]
+            },
+            "description": "Lista todos los permisos. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Crear permiso",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"RESERVA_EXPORTAR\",\n  \"descripcion\": \"Exportar reservas\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/permisos",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "permisos"
+              ]
+            },
+            "description": "Crea el permiso RESERVA_EXPORTAR. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Eliminar permiso (5)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/seguridad/permisos/5",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "seguridad",
+                "permisos",
+                "5"
+              ]
+            },
+            "description": "Elimina el permiso con id 5. Requiere rol ADMIN. Token heredado."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "5. Reservas (RBAC por permiso)",
+      "description": "Endpoints de reservas protegidos por permiso (RBAC). Probar con distintos usuarios para validar que el permiso requerido se respeta. Token heredado de la coleccion.",
+      "item": [
+        {
+          "name": "GET Listar reservas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/reservas",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "reservas"
+              ]
+            },
+            "description": "Lista todas las reservas. Requiere el permiso RESERVA_LEER. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Reserva por nro (R0000001)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/reservas/R0000001",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "reservas",
+                "R0000001"
+              ]
+            },
+            "description": "Obtiene la reserva R0000001. Requiere el permiso RESERVA_LEER. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Crear reserva",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nroReser\": \"R0000001\",\n  \"fechaReser\": \"2026-06-20\",\n  \"horaReser\": \"14:30:00\",\n  \"codCli\": \"CLI01\",\n  \"idProg\": 1,\n  \"codDest\": \"D001\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/reservas",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "reservas"
+              ]
+            },
+            "description": "Crea una nueva reserva R0000001. Requiere el permiso RESERVA_CREAR. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Actualizar reserva (R0000001)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nroReser\": \"R0000001\",\n  \"fechaReser\": \"2026-06-21\",\n  \"horaReser\": \"09:00:00\",\n  \"codCli\": \"CLI01\",\n  \"idProg\": 2,\n  \"codDest\": \"D002\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{gateway_url}}/reservas/R0000001",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "reservas",
+                "R0000001"
+              ]
+            },
+            "description": "Actualiza la reserva R0000001. Requiere el permiso RESERVA_ACTUALIZAR. Token heredado."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Eliminar reserva (R0000001)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{gateway_url}}/reservas/R0000001",
+              "host": [
+                "{{gateway_url}}"
+              ],
+              "path": [
+                "reservas",
+                "R0000001"
+              ]
+            },
+            "description": "Elimina la reserva R0000001. Requiere el permiso RESERVA_ELIMINAR. Token heredado."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5433/db_seguridad"
+    username: postgres
+    password: oracle123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
+security:
+  jwt:
+    issuer: ms-seguridad
+    expiration-seconds: 3600
